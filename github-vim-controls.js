@@ -15,7 +15,7 @@ changeOpacity();
 
 function reset(){
   if(files[0] == $('.content')[0]){
-    setTimeout(reset, 400);
+    setTimeout(reset, 300);
     return;
   }
   files = $('.content')
@@ -59,6 +59,7 @@ $(document).keypress(function(event) {
     $(files[i]).find('a').click();
     forward();
   } else if (event.which == 104) {      // press h
+      console.log('asdf');
     window.history.back();
   }
 });
