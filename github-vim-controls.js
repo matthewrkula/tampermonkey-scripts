@@ -1,11 +1,10 @@
 // ==UserScript==
-// @name       My Fancy New Userscript
-// @namespace  http://use.i.E.your.homepage/
+// @name       Github Vim Controls
 // @version    0.1
-// @description  enter something useful
+// @description  Vim controls while viewing Github repos
 // @match      https://github.com/*/*
 // @match      http://github.com/*/*
-// @copyright  2012+, You
+// @copyright  2013+, You
 // ==/UserScript==
 
 
@@ -46,7 +45,7 @@ window.onpopstate = backward;
 $(document).keypress(function(event){
     if(event.which == 106){   
         i += 1;
-        if(i == files.length)
+        if(i >= files.length)
             i -= 1;
         changeOpacity();  
     }else if(event.which == 107){   
