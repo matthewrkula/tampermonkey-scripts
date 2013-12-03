@@ -9,58 +9,93 @@
 // @copyright  2013+, Matt Kula
 // ==/UserScript==
 
-var i = 0;
-var files = $('.content');
-var stack = [];
+var domString = '.content';
+var files = $(domString);
+var positionStack = [];
+var position = 0;
+var modifierState = 0;
 
 changeOpacity();
 
 function reset(){
-  if(files[0] == $('.content')[0]){
+  if(files[0] == $(domString)[0]){
     setTimeout(reset, 300);
     return;
   }
-  files = $('.content')
+  files = $(domString)
   changeOpacity();
 }
 
+// Moving up a directory
 function forward() {
-  stack.push(i);
-  i = 0;
+  positionStack.push(position);
+  position = 0;
   reset();
 }
 
+// Moving down a directory
 function backward() {
-  if(stack.length > 0)
-    i = stack.pop();
+  if(positionStack.length > 0)
+    position = positionStack.pop();
   else 
-    i = 0;
+    position = 0;
   reset();
 }
 
 function changeOpacity() {
   files.css('opacity', '1');
-  $(files[i]).css('opacity', '0.5');
+  $(files[position]).css('opacity', '0.5');
 }
 
 window.onpopstate = backward;
 
-$(document).keypress(function(event) {
-  console.log(event.which);
-  if(event.which == 106) {              // press j
-    i += 1;
-    if(i == files.length)
-      i -= 1;
+var EventHolder = {
+  // j key
+  106 : function() {
+    position += 1;
+    if(position == files.length)
+      position -= 1;
     changeOpacity();
-  } else if(event.which === 107) {      // press k
-      i -= 1;
-      if(i < 0)
-        i = 0;
-      changeOpacity();
-  } else if (event.which === 13 || event.which == 108) {      // press enter or l
-    $(files[i]).find('a').click();
+  },
+
+  // k key
+  107 : function() {
+    position -= 1;
+    if(position < 0)
+      position = 0;
+    changeOpacity();
+  },
+
+  // Enter key
+  13 : function() {
+    $(files[position]).find('a').click();
     forward();
-  } else if (event.which == 104) {      // press h
+  },
+
+  // h key
+  104 : function(){
     window.history.back();
+  },
+
+  // l key
+  108 : function() {
+    $(files[position]).find('a').click();
+    forward();
+  },
+
+  // Shift + open bracket
+  123 : function() {
+    window.scrollBy(0, -100);
+  },
+
+  // Shift + close bracket
+  125 : function() {
+    window.scrollBy(0, 100);
   }
+}
+
+
+$(document).keypress(function(event) {
+  if(EventHolder.hasOwnProperty(event.which))
+    EventHolder[event.which]();
 });
