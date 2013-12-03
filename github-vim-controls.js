@@ -4,7 +4,7 @@
 // @description  Vim controls while viewing Github repos
 // @match      https://github.com/*/*
 // @match      http://github.com/*/*
-// @copyright  2013+, You
+// @copyright  2013+, Matt Kula
 // ==/UserScript==
 
 var i = 0;
@@ -44,18 +44,21 @@ function changeOpacity() {
 window.onpopstate = backward;
 
 $(document).keypress(function(event) {
-  if(event.which == 106) {
+  console.log(event.which);
+  if(event.which == 106) {              // press j
     i += 1;
     if(i == files.length)
       i -= 1;
     changeOpacity();
-  } else if(event.which === 107) {
+  } else if(event.which === 107) {      // press k
       i -= 1;
       if(i < 0)
         i = 0;
       changeOpacity();
-  } else if (event.which === 13) {
+  } else if (event.which === 13 || event.which == 108) {      // press enter or l
     $(files[i]).find('a').click();
     forward();
+  } else if (event.which == 104) {      // press h
+    window.history.back();
   }
 });
