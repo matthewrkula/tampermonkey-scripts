@@ -7,55 +7,54 @@
 // @copyright  2013+, You
 // ==/UserScript==
 
-
 var i = 0;
-var files = $(".content");
+var files = $('.content');
 var stack = [];
 
 changeOpacity();
 
 function reset(){
-  setTimeout(function(){
+  setTimeout(function() {
     files = $('.content')
     changeOpacity();
   }, 500);
 }
 
-function forward(){
+function forward() {
   stack.push(i);
   i = 0;
   reset();
 }
 
-function backward(){
+function backward() {
   if(stack.length > 0)
-   i = stack.pop();
+    i = stack.pop();
   else 
-   i = 0;
+    i = 0;
   reset();
 }
 
-function changeOpacity(){
+function changeOpacity() {
   files.css('opacity', '1');
   $(files[i]).css('opacity', '0.5');
 }
 
 window.onpopstate = backward;
 
-$(document).keypress(function(event){
-  if(event.which == 106){   
+$(document).keypress(function(event) {
+  if(event.which == 106) {
     i += 1;
-    if(i >= files.length)
+    if(i == files.length)
       i -= 1;
-    changeOpacity();  
-  }else if(event.which == 107){   
-    i -= 1;
-    if(i < 0)
-      i = 0;
     changeOpacity();
-  }else if(event.which == 13){
+  } else if(event.which === 107) {
+      i -= 1;
+      if(i < 0)
+        i = 0;
+      changeOpacity();
+  } else if (event.which === 13) {
     $(files[i]).find('a').click();
-    forward();     
-  }      
+    forward();
+  }
 });
 
