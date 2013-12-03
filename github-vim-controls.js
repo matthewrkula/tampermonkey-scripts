@@ -14,10 +14,12 @@ var stack = [];
 changeOpacity();
 
 function reset(){
-  setTimeout(function() {
-    files = $('.content')
-    changeOpacity();
-  }, 500);
+  if(files[0] == $('.content')[0]){
+    setTimeout(reset, 400);
+    return;
+  }
+  files = $('.content')
+  changeOpacity();
 }
 
 function forward() {
@@ -57,4 +59,3 @@ $(document).keypress(function(event) {
     forward();
   }
 });
-
