@@ -4,6 +4,8 @@
 // @description  Vim controls while viewing Github repos
 // @match      https://github.com/*/*
 // @match      http://github.com/*/*
+// @exclude    https://github.com/*/*/issues/*
+// @exclude    https://github.com/*/*/issues
 // @copyright  2013+, Matt Kula
 // ==/UserScript==
 
@@ -59,7 +61,6 @@ $(document).keypress(function(event) {
     $(files[i]).find('a').click();
     forward();
   } else if (event.which == 104) {      // press h
-      console.log('asdf');
     window.history.back();
   }
 });
