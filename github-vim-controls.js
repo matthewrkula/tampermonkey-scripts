@@ -3,9 +3,11 @@
 // @version    0.1
 // @description  Vim controls while viewing Github repos
 // @match      https://github.com/*/*
-// @match      http://github.com/*/*
+// @exclude    https://github.com/*/*/edit/*
 // @exclude    https://github.com/*/*/issues/*
 // @exclude    https://github.com/*/*/issues
+// @exclude    https://github.com/*/*/pulls/*
+// @exclude    https://github.com/*/*/pulls
 // @copyright  2013+, Matt Kula
 // ==/UserScript==
 
@@ -14,6 +16,8 @@ var files = $(domString);
 var positionStack = [];
 var position = 0;
 var modifierState = 0;
+
+var isEditing = false;
 
 changeOpacity();
 
@@ -96,6 +100,24 @@ var EventHolder = {
 
 
 $(document).keypress(function(event) {
+  if(isEditing)
+      return;
   if(EventHolder.hasOwnProperty(event.which))
     EventHolder[event.which]();
 });
+
+$("input").focus(function(){
+  isEditing = true;
+});
+
+$("input").blur(function(){
+  isEditing = false;
+})
+
+$("textarea").focus(function(){
+  isEditing = true;
+});
+
+$("textarea").blur(function(){
+  isEditing = false;
+})
